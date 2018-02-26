@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoUniversityCore", "ContosoUniversityCore\ContosoUniversityCore.csproj", "{6D01C0F0-D711-472B-85C7-51A32020D8BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversityCore", "ContosoUniversityCore\ContosoUniversityCore.csproj", "{6D01C0F0-D711-472B-85C7-51A32020D8BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoUniversityCore.Test", "ContosoUniversityCore.Test\ContosoUniversityCore.Test.csproj", "{D0194A0C-DF1D-458C-BBC2-0247FBA70633}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6D01C0F0-D711-472B-85C7-51A32020D8BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D01C0F0-D711-472B-85C7-51A32020D8BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D01C0F0-D711-472B-85C7-51A32020D8BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0194A0C-DF1D-458C-BBC2-0247FBA70633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0194A0C-DF1D-458C-BBC2-0247FBA70633}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0194A0C-DF1D-458C-BBC2-0247FBA70633}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0194A0C-DF1D-458C-BBC2-0247FBA70633}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
