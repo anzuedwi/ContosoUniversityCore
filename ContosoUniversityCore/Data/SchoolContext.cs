@@ -29,7 +29,7 @@ namespace ContosoUniversityCore.Data
             modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaim");
             modelBuilder.Entity<IdentityRole<string>>().ToTable("Role");
             modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaim");
-            modelBuilder.Entity<IdentityUser<string>>().ToTable("User");
+            modelBuilder.Entity<ApplicationUser>().ToTable("User");
             modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogin");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserToken");
@@ -45,7 +45,8 @@ namespace ContosoUniversityCore.Data
             modelBuilder.Entity<Person>().ToTable("Person");
             
             //Establish Composite Key
-            modelBuilder.Entity<CourseAssignment>().HasKey(c => new { c.CourseID, c.InstructorID });
+            modelBuilder.Entity<CourseAssignment>()
+                .HasKey(courseAssignment => new { courseAssignment.CourseId, courseAssignment.InstructorId });
         }
     }
 }

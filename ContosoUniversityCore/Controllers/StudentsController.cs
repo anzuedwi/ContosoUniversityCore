@@ -46,7 +46,7 @@ namespace ContosoUniversityCore.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 students = students.Where(s => s.LastName.Contains(searchString)
-                                       || s.FirstMidName.Contains(searchString));
+                                       || s.FirstName.Contains(searchString));
             }
             switch (sortOrder)
             {
@@ -79,7 +79,7 @@ namespace ContosoUniversityCore.Controllers
                 .Include(s => s.Enrollments)
                     .ThenInclude(e => e.Course)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.PersonId == id);
 
             if (student == null)
             {
@@ -101,7 +101,7 @@ namespace ContosoUniversityCore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("EnrollmentDate,FirstMidName,LastName")] Student student)
+            [Bind("EnrollmentDate,FirstName,LastName")] Student student)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace ContosoUniversityCore.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students.SingleOrDefaultAsync(m => m.ID == id);
+            var student = await _context.Students.SingleOrDefaultAsync(m => m.PersonId == id);
             if (student == null)
             {
                 return NotFound();
@@ -149,11 +149,11 @@ namespace ContosoUniversityCore.Controllers
             {
                 return NotFound();
             }
-            var studentToUpdate = await _context.Students.SingleOrDefaultAsync(s => s.ID == id);
+            var studentToUpdate = await _context.Students.SingleOrDefaultAsync(s => s.PersonId == id);
             if (await TryUpdateModelAsync<Student>(
                 studentToUpdate,
                 "",
-                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+                s => s.FirstName, s => s.LastName, s => s.EnrollmentDate))
             {
                 try
                 {
@@ -180,7 +180,7 @@ namespace ContosoUniversityCore.Controllers
 
             var student = await _context.Students
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.PersonId == id);
             if (student == null)
             {
                 return NotFound();
@@ -203,7 +203,7 @@ namespace ContosoUniversityCore.Controllers
         {
             var student = await _context.Students
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.PersonId == id);
             if (student == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -224,7 +224,7 @@ namespace ContosoUniversityCore.Controllers
 
         private bool StudentExists(int id)
         {
-            return _context.Students.Any(e => e.ID == id);
+            return _context.Students.Any(e => e.PersonId == id);
         }
     }
 }

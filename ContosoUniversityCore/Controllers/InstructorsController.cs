@@ -34,16 +34,16 @@ namespace ContosoUniversityCore.Controllers
 
             if (id != null)
             {
-                ViewData["InstructorID"] = id.Value;
+                ViewData["InstructorId"] = id.Value;
                 Instructor instructor = viewModel.Instructors.Where(
-                    i => i.ID == id.Value).Single();
+                    i => i.PersonId == id.Value).Single();
                 viewModel.Courses = instructor.CourseAssignments.Select(s => s.Course);
             }
 
             if (courseID != null)
             {
-                ViewData["CourseID"] = courseID.Value;
-                var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
+                ViewData["CourseId"] = courseID.Value;
+                var selectedCourse = viewModel.Courses.Where(x => x.CourseId == courseID).Single();
                 await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();
                 foreach (Enrollment enrollment in selectedCourse.Enrollments)
                 {
@@ -64,7 +64,7 @@ namespace ContosoUniversityCore.Controllers
             }
 
             var instructor = await _context.Instructors
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.PersonId == id);
             if (instructor == null)
             {
                 return NotFound();
@@ -84,14 +84,14 @@ namespace ContosoUniversityCore.Controllers
         // POST: Instructors/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstMidName,HireDate,LastName,OfficeAssignment")] Instructor instructor, string[] selectedCourses)
+        public async Task<IActionResult> Create([Bind("FirstName,HireDate,LastName,OfficeAssignment")] Instructor instructor, string[] selectedCourses)
         {
             if (selectedCourses != null)
             {
                 instructor.CourseAssignments = new List<CourseAssignment>();
                 foreach (var course in selectedCourses)
                 {
-                    var courseToAdd = new CourseAssignment { InstructorID = instructor.ID, CourseID = int.Parse(course) };
+                    var courseToAdd = new CourseAssignment { InstructorId = instructor.PersonId, CourseId = int.Parse(course) };
                     instructor.CourseAssignments.Add(courseToAdd);
                 }
             }
@@ -117,7 +117,7 @@ namespace ContosoUniversityCore.Controllers
                 .Include(i => i.OfficeAssignment)
                 .Include(i => i.CourseAssignments).ThenInclude(i => i.Course)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.PersonId == id);
             if (instructor == null)
             {
                 return NotFound();
@@ -129,15 +129,15 @@ namespace ContosoUniversityCore.Controllers
         private void PopulateAssignedCourseData(Instructor instructor)
         {
             var allCourses = _context.Courses;
-            var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(c => c.CourseID));
+            var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(c => c.CourseId));
             var viewModel = new List<AssignedCourseData>();
             foreach (var course in allCourses)
             {
                 viewModel.Add(new AssignedCourseData
                 {
-                    CourseID = course.CourseID,
+                    CourseID = course.CourseId,
                     Title = course.Title,
-                    Assigned = instructorCourses.Contains(course.CourseID)
+                    Assigned = instructorCourses.Contains(course.CourseId)
                 });
             }
             ViewData["Courses"] = viewModel;
@@ -159,12 +159,12 @@ namespace ContosoUniversityCore.Controllers
                 .Include(i => i.OfficeAssignment)
                 .Include(i => i.CourseAssignments)
                     .ThenInclude(i => i.Course)
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.PersonId == id);
 
             if (await TryUpdateModelAsync<Instructor>(
                 instructorToUpdate,
                 "",
-                i => i.FirstMidName, i => i.LastName, i => i.HireDate, i => i.OfficeAssignment))
+                i => i.FirstName, i => i.LastName, i => i.HireDate, i => i.OfficeAssignment))
             {
                 if (String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment?.Location))
                 {
@@ -199,22 +199,22 @@ namespace ContosoUniversityCore.Controllers
 
             var selectedCoursesHS = new HashSet<string>(selectedCourses);
             var instructorCourses = new HashSet<int>
-                (instructorToUpdate.CourseAssignments.Select(c => c.Course.CourseID));
+                (instructorToUpdate.CourseAssignments.Select(c => c.Course.CourseId));
             foreach (var course in _context.Courses)
             {
-                if (selectedCoursesHS.Contains(course.CourseID.ToString()))
+                if (selectedCoursesHS.Contains(course.CourseId.ToString()))
                 {
-                    if (!instructorCourses.Contains(course.CourseID))
+                    if (!instructorCourses.Contains(course.CourseId))
                     {
-                        instructorToUpdate.CourseAssignments.Add(new CourseAssignment { InstructorID = instructorToUpdate.ID, CourseID = course.CourseID });
+                        instructorToUpdate.CourseAssignments.Add(new CourseAssignment { InstructorId = instructorToUpdate.PersonId, CourseId = course.CourseId });
                     }
                 }
                 else
                 {
 
-                    if (instructorCourses.Contains(course.CourseID))
+                    if (instructorCourses.Contains(course.CourseId))
                     {
-                        CourseAssignment courseToRemove = instructorToUpdate.CourseAssignments.SingleOrDefault(i => i.CourseID == course.CourseID);
+                        CourseAssignment courseToRemove = instructorToUpdate.CourseAssignments.SingleOrDefault(i => i.CourseId == course.CourseId);
                         _context.Remove(courseToRemove);
                     }
                 }
@@ -230,7 +230,7 @@ namespace ContosoUniversityCore.Controllers
             }
 
             var instructor = await _context.Instructors
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.PersonId == id);
             if (instructor == null)
             {
                 return NotFound();
@@ -246,12 +246,12 @@ namespace ContosoUniversityCore.Controllers
         {
             Instructor instructor = await _context.Instructors
                 .Include(i => i.CourseAssignments)
-                .SingleAsync(i => i.ID == id);
+                .SingleAsync(i => i.PersonId == id);
 
             var departments = await _context.Departments
-                .Where(d => d.InstructorID == id)
+                .Where(d => d.InstructorId == id)
                 .ToListAsync();
-            departments.ForEach(d => d.InstructorID = null);
+            departments.ForEach(d => d.InstructorId = null);
 
             _context.Instructors.Remove(instructor);
 
@@ -261,7 +261,7 @@ namespace ContosoUniversityCore.Controllers
 
         private bool InstructorExists(int id)
         {
-            return _context.Instructors.Any(e => e.ID == id);
+            return _context.Instructors.Any(e => e.PersonId == id);
         }
     }
 }

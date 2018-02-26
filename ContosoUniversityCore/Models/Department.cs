@@ -7,13 +7,19 @@ namespace ContosoUniversityCore.Models
 {
     public class Department
     {
-        public int DepartmentID { get; set; }
+        public Department()
+        {
+            Courses = new HashSet<Course>();
+        }
+
+        [Key]
+        public int DepartmentId { get; set; }
 
         [StringLength(50, MinimumLength = 3)]
         public string Name { get; set; }
 
         [DataType(DataType.Currency)]
-        [Column(TypeName = "money")]
+        [Column(TypeName = "Money")]
         public decimal Budget { get; set; }
 
         [DataType(DataType.Date)]
@@ -21,12 +27,14 @@ namespace ContosoUniversityCore.Models
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
-        public int? InstructorID { get; set; }
+        public int? InstructorId { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
+        [ForeignKey("InstructorId")]
         public Instructor Administrator { get; set; }
+
         public ICollection<Course> Courses { get; set; }
     }
 }

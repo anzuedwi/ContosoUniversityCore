@@ -7,9 +7,14 @@ namespace ContosoUniversityCore.Models
 {
     public class CourseAssignment
     {
-        public int InstructorID { get; set; }
-        public int CourseID { get; set; }
+        public int InstructorId { get; set; }
+
+        public int CourseId { get; set; }
+
+        [ForeignKey("InstructorId")]
         public Instructor Instructor { get; set; }
+
+        [ForeignKey("CourseId")]
         public Course Course { get; set; }
     }
 }

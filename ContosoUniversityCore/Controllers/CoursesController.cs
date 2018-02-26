@@ -39,7 +39,7 @@ namespace ContosoUniversityCore.Controllers
             var course = await _context.Courses
                 .Include(c => c.Department)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.CourseID == id);
+                .SingleOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -57,7 +57,7 @@ namespace ContosoUniversityCore.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseID,Credits,DepartmentID,Title")] Course course)
+        public async Task<IActionResult> Create([Bind("CourseId,Credits,DepartmentId,Title")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace ContosoUniversityCore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            PopulateDepartmentsDropDownList(course.DepartmentID);
+            PopulateDepartmentsDropDownList(course.DepartmentId);
             return View(course);
         }
 
@@ -78,12 +78,12 @@ namespace ContosoUniversityCore.Controllers
 
             var course = await _context.Courses
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.CourseID == id);
+                .SingleOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
             }
-            PopulateDepartmentsDropDownList(course.DepartmentID);
+            PopulateDepartmentsDropDownList(course.DepartmentId);
             return View(course);
         }
 
@@ -97,11 +97,11 @@ namespace ContosoUniversityCore.Controllers
             }
 
             var courseToUpdate = await _context.Courses
-                .SingleOrDefaultAsync(c => c.CourseID == id);
+                .SingleOrDefaultAsync(c => c.CourseId == id);
 
             if (await TryUpdateModelAsync<Course>(courseToUpdate,
-                "",
-                c => c.Credits, c => c.DepartmentID, c => c.Title))
+                string.Empty,
+                c => c.Credits, c => c.DepartmentId, c => c.Title))
             {
                 try
                 {
@@ -116,7 +116,7 @@ namespace ContosoUniversityCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            PopulateDepartmentsDropDownList(courseToUpdate.DepartmentID);
+            PopulateDepartmentsDropDownList(courseToUpdate.DepartmentId);
             return View(courseToUpdate);
         }
 
@@ -125,7 +125,7 @@ namespace ContosoUniversityCore.Controllers
             var departmentsQuery = from d in _context.Departments
                                    orderby d.Name
                                    select d;
-            ViewBag.DepartmentID = new SelectList(departmentsQuery.AsNoTracking(), "DepartmentID", "Name", selectedDepartment);
+            ViewBag.DepartmentId = new SelectList(departmentsQuery.AsNoTracking(), "DepartmentId", "Name", selectedDepartment);
         }
 
 
@@ -140,7 +140,7 @@ namespace ContosoUniversityCore.Controllers
             var course = await _context.Courses
                 .Include(c => c.Department)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.CourseID == id);
+                .SingleOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -154,7 +154,7 @@ namespace ContosoUniversityCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var course = await _context.Courses.SingleOrDefaultAsync(m => m.CourseID == id);
+            var course = await _context.Courses.SingleOrDefaultAsync(m => m.CourseId == id);
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -180,7 +180,7 @@ namespace ContosoUniversityCore.Controllers
 
         private bool CourseExists(int id)
         {
-            return _context.Courses.Any(e => e.CourseID == id);
+            return _context.Courses.Any(e => e.CourseId == id);
         }
     }
 }
