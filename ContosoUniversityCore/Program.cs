@@ -7,6 +7,10 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using ContosoUniversityCore.Data;
+using Microsoft.AspNetCore.Identity;
+using ContosoUniversityCore.Models;
 
 namespace ContosoUniversityCore
 {
@@ -14,7 +18,28 @@ namespace ContosoUniversityCore
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var schoolContext = services.GetRequiredService<SchoolContext>();
+                    var roleManager = services.GetService<RoleManager<IdentityRole>>();
+                    var userManager = services.GetService<UserManager<ApplicationUser>>();
+                    var dbInitializedLogger = services.GetRequiredService<ILogger<DbInitializer>>();
+
+                    DbInitializer.Initialize(schoolContext, roleManager, userManager);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while seeding the database.");
+                }
+            }
+
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
