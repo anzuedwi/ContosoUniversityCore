@@ -1,0 +1,11 @@
+language: csharp
+solution: ContosoUniversityCore.sln
+mono: none
+dotnet: 2.1.4
+install:
+  - dotnet restore
+before_script:
+  - dotnet clean
+  - cd ContosoUniversityCore.Test
+script:
+  - dotnet xunit -verbose
