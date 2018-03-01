@@ -5,7 +5,10 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversityCore", "ContosoUniversityCore\ContosoUniversityCore.csproj", "{6D01C0F0-D711-472B-85C7-51A32020D8BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoUniversityCore.Test", "ContosoUniversityCore.Test\ContosoUniversityCore.Test.csproj", "{D0194A0C-DF1D-458C-BBC2-0247FBA70633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversityCore.Test", "ContosoUniversityCore.Test\ContosoUniversityCore.Test.csproj", "{D0194A0C-DF1D-458C-BBC2-0247FBA70633}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6D01C0F0-D711-472B-85C7-51A32020D8BC} = {6D01C0F0-D711-472B-85C7-51A32020D8BC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
