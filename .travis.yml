@@ -2,8 +2,6 @@ language: csharp
 solution: ContosoUniversityCore.sln
 mono: none
 dotnet: 2.1.4
-before_install:
-  - dotnet clean
 install:
   - dotnet restore
 before_script:
