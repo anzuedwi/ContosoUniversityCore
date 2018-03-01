@@ -33,8 +33,7 @@ namespace ContosoUniversityCore.Test.UnitTest
                 context.SaveChanges();
 
                 var numberOfStudents = context.Students.Count();
-                Assert.Equal(8, numberOfStudents);
-                Assert.False(numberOfStudents == 9);
+                Assert.Equal(9, numberOfStudents);
             }
 
         }
@@ -45,6 +44,7 @@ namespace ContosoUniversityCore.Test.UnitTest
 
             var builder = new DbContextOptionsBuilder<SchoolContext>();
 
+            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
             builder.UseInMemoryDatabase("EFCoreDatabase");
 
             contextOptions = builder.Options;
